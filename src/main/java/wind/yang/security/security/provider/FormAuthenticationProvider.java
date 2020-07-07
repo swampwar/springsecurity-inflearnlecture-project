@@ -7,13 +7,12 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import wind.yang.security.security.common.FormWebAuthenticationDetails;
 import wind.yang.security.security.service.AccountContext;
 
-public class CustomAuthenticationProvider implements AuthenticationProvider {
+public class FormAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -27,13 +26,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         AccountContext accountContext = (AccountContext) userDetailsService.loadUserByUsername(username);
         if(!passwordEncoder.matches(password, accountContext.getPassword())){
-            throw new BadCredentialsException("비밀번호가 맞지 않음");
+            throw new BadCredentialsException("Password Fail");
         }
 
         FormWebAuthenticationDetails details = (FormWebAuthenticationDetails) authentication.getDetails();
         String secretKey = details.getSecretKey();
         if(!"secret".equals(secretKey)){
-            throw new InsufficientAuthenticationException("비밀키가 맞지 않음");
+            throw new InsufficientAuthenticationException("SecretKey Fail");
         }
 
         UsernamePasswordAuthenticationToken token =
