@@ -15,7 +15,6 @@ import java.util.Set;
 @Table(name = "ROLE")
 @Entity
 public class Role {
-
     @Id @GeneratedValue @Column(name = "role_id")
     private Long id;
 

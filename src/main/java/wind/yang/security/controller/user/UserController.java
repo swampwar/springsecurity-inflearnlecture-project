@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import wind.yang.security.domain.dto.AccountDto;
 import wind.yang.security.domain.entity.Account;
 import wind.yang.security.service.UserService;
-import wind.yang.security.service.impl.AccountServiceImpl;
 
 @Controller
 public class UserController {
@@ -21,6 +20,7 @@ public class UserController {
 
     @GetMapping(path="/mypage")
     public String myPage(){
+        userService.order();
         return "user/mypage";
     }
 

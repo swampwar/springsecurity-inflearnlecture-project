@@ -46,6 +46,44 @@ public class SecurityResourceService {
     }
 
     /**
+     * Method보안을 위한 자원(Resources)을 조회하여 자원-역할 맵핑정보를 반환한다.
+     * 자원(Method)는 package 전체 경로로 저장된다.
+     */
+    public LinkedHashMap<String, List<ConfigAttribute>> getMethodResourceList() {
+        LinkedHashMap<String, List<ConfigAttribute>> requestMap = new LinkedHashMap<>();
+
+        List<Resources> resourcesList = resourcesRepository.findAllMethodResources();
+        resourcesList.forEach(resources -> {
+            ArrayList<ConfigAttribute> configAttributes = new ArrayList<>();
+            resources.getRoleSet().forEach(
+                    role -> configAttributes.add(new SecurityConfig(role.getRoleName()))
+            );
+            requestMap.put(resources.getResourceName(), configAttributes);
+        });
+
+        return requestMap;
+    }
+
+    /**
+     * Method보안을 위한 자원(Resources)을 조회하여 자원-역할 맵핑정보를 반환한다.
+     * 자원(Method)는 Pointcut 표현식으로 저장된다.
+     */
+    public LinkedHashMap<String, List<ConfigAttribute>> getPointcutResourceList() {
+        LinkedHashMap<String, List<ConfigAttribute>> requestMap = new LinkedHashMap<>();
+
+        List<Resources> resourcesList = resourcesRepository.findAllPointcutResources();
+        resourcesList.forEach(resources -> {
+            ArrayList<ConfigAttribute> configAttributes = new ArrayList<>();
+            resources.getRoleSet().forEach(
+                    role -> configAttributes.add(new SecurityConfig(role.getRoleName()))
+            );
+            requestMap.put(resources.getResourceName(), configAttributes);
+        });
+
+        return requestMap;
+    }
+
+    /**
      * 접근 가능한 IP주소 리스트 조회
      */
     public List<String> getAccessIpList() {
@@ -55,4 +93,6 @@ public class SecurityResourceService {
 
         return accessIpList;
     }
+
+
 }
